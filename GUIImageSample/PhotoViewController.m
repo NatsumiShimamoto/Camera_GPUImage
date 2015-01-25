@@ -34,31 +34,31 @@
 -(void)viewDidAppear:(BOOL)animated{
     
     if (!delegate.cameraFlag) {
-
-    //画像の取得先をカメラに設定
-    UIImagePickerControllerSourceType sourceType = UIImagePickerControllerSourceTypeCamera;
-    
-    
-    //カメラを使用可能かどうか判定する
-    if([UIImagePickerController isSourceTypeAvailable:sourceType]){
-        
-        //UIImagePickerControllerを初期化・生成
-        UIImagePickerController *picker = [[UIImagePickerController alloc] init];
         
         //画像の取得先をカメラに設定
-        picker.sourceType = sourceType;
+        UIImagePickerControllerSourceType sourceType = UIImagePickerControllerSourceTypeCamera;
         
-        //デリゲートを設定
-        picker.delegate = self;
         
-        delegate.cameraFlag = YES;
-
-        //カメラをモーダルビューとして表示する
-        [self presentViewController:picker animated:YES completion:nil];
-        
+        //カメラを使用可能かどうか判定する
+        if([UIImagePickerController isSourceTypeAvailable:sourceType]){
+            
+            //UIImagePickerControllerを初期化・生成
+            UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+            
+            //画像の取得先をカメラに設定
+            picker.sourceType = sourceType;
+            
+            //デリゲートを設定
+            picker.delegate = self;
+            
+            delegate.cameraFlag = YES;
+            
+            //カメラをモーダルビューとして表示する
+            [self presentViewController:picker animated:YES completion:nil];
+            
+        }
     }
-    }
-   
+    
 }
 
 //何らかの画像が取得できた場合
@@ -69,11 +69,11 @@
     //ModalViewControllerのViewを閉じる
     [[picker presentingViewController] dismissViewControllerAnimated:YES completion:nil];
     
-    imgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 70, 320, 320)];
-    imgView.image = image;
-    [self.view addSubview:imgView];
-
-  
+    imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 70, 320, 320)];
+    imageView.image = image;
+    [self.view addSubview:imageView];
+    
+    
     /*
      //カメラモードの場合
      if(picker.sourceType == UIImagePickerControllerSourceTypeCamera){
@@ -88,19 +88,14 @@
     
 }
 
-/*
-#pragma mark - Navigation
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+//キャンセルをした場合
+-(void)imagePickerControllerDidCancel:(UIImagePickerController *)picker{
+    
+    //ModalViewControllerのViewを閉じる
+    [[picker presentingViewController] dismissViewControllerAnimated:YES completion:nil];
+    
 }
-*/
-
-
-
-
 
 /*
  - (IBAction)colorFilterBtn:(UIButton*)filterBtn{
@@ -162,129 +157,128 @@
  }
  
  
- 
- 
- 
- 
- - (IBAction)pressSaveBtn:(id)sender {
- 
- UIImage *image = self.imageView.image;
- 
- ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
- [library writeImageToSavedPhotosAlbum:image.CGImage
- metadata:nil
- completionBlock:^(NSURL *assetURL, NSError *error){
- if (!error) {
- NSLog(@"保存成功！");
- }
- }
- ];
- }
- 
- -(IBAction)blurFilter{
- 
- //UIImage変数に画像を格納
- UIImage *inputImage = self.imageView.image;
- //画像をGPUImageのフォーマットに変換
- GPUImagePicture *imagePicture = [[GPUImagePicture alloc] initWithImage:inputImage];
- //ぼかしフィルターを生成
- GPUImageGaussianBlurFilter *gaussianBlurFilter = [[GPUImageGaussianBlurFilter alloc] init];
- 
- //[(GPUImageGaussianSelectiveBlurFilter *)gaussianBlurFilter  setExcludeCircleRadius:0.4];
- //[(GPUImageGaussianSelectiveBlurFilter *)gaussianBlurFilter setExcludeCirclePoint:CGPointMake(0.5, 0.5)];
- 
- //画像にぼかしフィルターをくっつける
- [imagePicture addTarget:gaussianBlurFilter];
- //フィルター処理を実行
- [imagePicture processImage];
- //実行したフィルターから画像を取得
- UIImage *outputBlurImage = [gaussianBlurFilter imageByFilteringImage:inputImage];
- //取得した画像をImageViewにセットする
- self.imageView.image = outputBlurImage;
- }
- 
- 
- 
  */
+
+
+-(IBAction)savePhoto{
+    
+    UIImage *image = imageView.image;
+    
+    ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
+    [library writeImageToSavedPhotosAlbum:image.CGImage
+                                 metadata:nil
+                          completionBlock:^(NSURL *assetURL, NSError *error){
+                              if (!error) {
+                                  NSLog(@"保存成功！");
+                              }
+                          }
+     ];
+}
+
+-(IBAction)blurFilter{
+    
+    //UIImage変数に画像を格納
+    UIImage *inputImage = imageView.image;
+    //画像をGPUImageのフォーマットに変換
+    GPUImagePicture *imagePicture = [[GPUImagePicture alloc] initWithImage:inputImage];
+    //ぼかしフィルターを生成
+    GPUImageGaussianBlurFilter *gaussianBlurFilter = [[GPUImageGaussianBlurFilter alloc] init];
+    
+    //[(GPUImageGaussianSelectiveBlurFilter *)gaussianBlurFilter  setExcludeCircleRadius:0.4];
+    //[(GPUImageGaussianSelectiveBlurFilter *)gaussianBlurFilter setExcludeCirclePoint:CGPointMake(0.5, 0.5)];
+    
+    //画像にぼかしフィルターをくっつける
+    [imagePicture addTarget:gaussianBlurFilter];
+    //フィルター処理を実行
+    [imagePicture processImage];
+    //実行したフィルターから画像を取得
+    UIImage *outputBlurImage = [gaussianBlurFilter imageByFilteringImage:inputImage];
+    //取得した画像をImageViewにセットする
+    imageView.image = outputBlurImage;
+}
+
+
+
+
 
 
 /* --- 保存が完了したら呼ばれるメソッド --- */
-/*
- -(void)targetImage:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(void *)context{
- 
- //保存失敗時
- if(error){
- //アラートの初期化
- UIAlertView *alert =[[UIAlertView alloc] initWithTitle:@""
- message:@"保存できませんでした"
- delegate:nil
- cancelButtonTitle:@"OK"
- otherButtonTitles: nil];
- //アラートの表示
- [alert show];
- }
- 
- //保存成功時
- else{
- //アラートの初期化
- UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@""
- message:@"保存を完了しました"
- delegate:nil
- cancelButtonTitle:@"OK"
- otherButtonTitles:nil];
- //アラートの表示
- [alert show];
- }
- }
- */
+
+-(void)targetImage:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(void *)context{
+    
+    //保存失敗時
+    if(error){
+        //アラートの初期化
+        UIAlertView *alert =[[UIAlertView alloc] initWithTitle:@""
+                                                       message:@"保存できませんでした"
+                                                      delegate:nil
+                                             cancelButtonTitle:@"OK"
+                                             otherButtonTitles: nil];
+        //アラートの表示
+        [alert show];
+    }
+    
+    //保存成功時
+    else{
+        //アラートの初期化
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@""
+                                                        message:@"保存を完了しました"
+                                                       delegate:nil
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil];
+        //アラートの表示
+        [alert show];
+    }
+}
 
 
-/*
- -(IBAction)postToTwitter{
- 
- //ServiceTypeをTwitterに設定
- NSString *serviceType = SLServiceTypeTwitter;
- //Twitterが利用可能かチェック
- if([SLComposeViewController isAvailableForServiceType:serviceType]){
- 
- //SLComposeViewControllerを初期化・生成
- SLComposeViewController *twitterpostVC = [[SLComposeViewController alloc] init];
- 
- //ServiceTypeをTwitterに設定
- twitterpostVC = [SLComposeViewController composeViewControllerForServiceType:serviceType];
- 
- //初期テキストの設定
- [twitterpostVC setInitialText:@"#わんだ"];
- 
- //画像の追加
- [twitterpostVC addImage:self.imageView.image];
- 
- //投稿の可否         //↓ツイート編集終了時
- [twitterpostVC setCompletionHandler:^(SLComposeViewControllerResult result){
- if(result == SLComposeViewControllerResultDone){
- UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@""
- message:@"投稿を完了しました"
- delegate:nil
- cancelButtonTitle:@"OK"
- otherButtonTitles:nil];
- [alert show];
- }
- else{
- UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@""
- message:@"投稿できませんでした"
- delegate:nil
- cancelButtonTitle:@"OK"
- otherButtonTitles:nil];
- [alert show];
- }
- }
- ];
- 
- 
- //SLComposeViewControllerのViewを表示
- [self presentViewController:twitterpostVC animated:YES completion:nil];
- 
- }
- }
- */
+
+
+-(IBAction)postToTwitter{
+    
+    //ServiceTypeをTwitterに設定
+    NSString *serviceType = SLServiceTypeTwitter;
+    //Twitterが利用可能かチェック
+    if([SLComposeViewController isAvailableForServiceType:serviceType]){
+        
+        //SLComposeViewControllerを初期化・生成
+        SLComposeViewController *twitterpostVC = [[SLComposeViewController alloc] init];
+        
+        //ServiceTypeをTwitterに設定
+        twitterpostVC = [SLComposeViewController composeViewControllerForServiceType:serviceType];
+        
+        //初期テキストの設定
+        [twitterpostVC setInitialText:@"#わんだ"];
+        
+        //画像の追加
+        [twitterpostVC addImage:imageView.image];
+        
+        //投稿の可否         //↓ツイート編集終了時
+        [twitterpostVC setCompletionHandler:^(SLComposeViewControllerResult result){
+            if(result == SLComposeViewControllerResultDone){
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@""
+                                                                message:@"投稿を完了しました"
+                                                               delegate:nil
+                                                      cancelButtonTitle:@"OK"
+                                                      otherButtonTitles:nil];
+                [alert show];
+            }
+            else{
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@""
+                                                                message:@"投稿できませんでした"
+                                                               delegate:nil
+                                                      cancelButtonTitle:@"OK"
+                                                      otherButtonTitles:nil];
+                [alert show];
+            }
+        }
+         ];
+        
+        
+        //SLComposeViewControllerのViewを表示
+        [self presentViewController:twitterpostVC animated:YES completion:nil];
+        
+    }
+}
+
 @end

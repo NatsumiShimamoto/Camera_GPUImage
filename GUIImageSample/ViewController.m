@@ -7,8 +7,6 @@
 //
 
 #import "ViewController.h"
-#import "GPUImage.h"
-#import <AssetsLibrary/AssetsLibrary.h>
 
 @interface ViewController ()
 
@@ -36,17 +34,7 @@
 //カメラを起動する
 -(IBAction)takePhoto{
     
-    //画像の取得先をカメラに設定
-   // UIImagePickerControllerSourceType sourceType = UIImagePickerControllerSourceTypeCamera;
-    [self usePhoto];
-
-
-}
-
-
--(void)usePhoto{
-    
-    PhotoViewController *photoVC = [self.storyboard instantiateViewControllerWithIdentifier:@"PhotoViewController"];
+     PhotoViewController *photoVC = [self.storyboard instantiateViewControllerWithIdentifier:@"PhotoViewController"];
     [self presentViewController:photoVC animated:YES completion:nil];
     
     NSLog(@"画面遷移");
@@ -74,15 +62,6 @@
         [self presentViewController:picker animated:YES completion:nil];
     }
 }
-
-//キャンセルをした場合
--(void)imagePickerControllerDidCancel:(UIImagePickerController *)picker{
-    
-    //ModalViewControllerのViewを閉じる
-    [[picker presentingViewController] dismissViewControllerAnimated:YES completion:nil];
-    
-}
-
 
 
 @end

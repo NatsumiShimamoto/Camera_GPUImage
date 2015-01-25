@@ -8,14 +8,30 @@
 
 #import "ViewController.h"
 #import "AppDelegate.h"
+#import <AssetsLibrary/AssetsLibrary.h>
+#import "GPUImage.h"
 
 @interface PhotoViewController : UIViewController<UINavigationControllerDelegate,UIImagePickerControllerDelegate>
 
 {
     AppDelegate *delegate;
     
-    UIImageView *imgView;
+    UIImageView *imageView;
   
 }
+
+
+
+-(IBAction)blurFilter;
+
+//Twitterへ投稿
+-(IBAction)postToTwitter;
+
+//写真を保存する
+-(IBAction)savePhoto;
+
+//エフェクトをかける
+-(IBAction)effect;
+
 
 @end
