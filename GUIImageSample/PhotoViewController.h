@@ -7,11 +7,15 @@
 //
 
 #import "ViewController.h"
+#import "AppDelegate.h"
 
-@interface PhotoViewController : UIViewController
+@interface PhotoViewController : UIViewController<UINavigationControllerDelegate,UIImagePickerControllerDelegate>
+
 {
+    AppDelegate *delegate;
+    
     UIImageView *imgView;
-    UIImage *image;
+  
 }
 
 @end
