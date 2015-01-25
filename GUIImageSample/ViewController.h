@@ -26,18 +26,18 @@
 }
 
 
--(IBAction)pressSaveBtn:(id)sender;
--(IBAction)blurFilter;
+//-(IBAction)pressSaveBtn:(id)sender;
+//-(IBAction)blurFilter;
 
 
 //カメラを起動する
--(IBAction)takePhoto;
+//-(IBAction)takePhoto;
 
 //フォトライブラリを開く
--(IBAction)openLibrary;
+//-(IBAction)openLibrary;
 
 //Twitterへ投稿
--(IBAction)postToTwitter;
+//-(IBAction)postToTwitter;
 
 //写真を保存する
 //-(IBAction)savePhoto;
