@@ -21,7 +21,8 @@
     delegate = [UIApplication sharedApplication].delegate;
     delegate.cameraFlag = NO;
     
-    NSLog(@"おおおおお");
+    ViewController *vc = [[ViewController alloc] initWithNibName:nil bundle:nil];
+    sourceType = vc.sourceType;
     
 }
 
@@ -33,33 +34,50 @@
 
 -(void)viewDidAppear:(BOOL)animated{
     
-    if (!delegate.cameraFlag) {
+    if (sourceType == UIImagePickerControllerSourceTypeCamera) { //画像の取得先がカメラ
         
-        //画像の取得先をカメラに設定
-        UIImagePickerControllerSourceType sourceType = UIImagePickerControllerSourceTypeCamera;
-        
-        
-        //カメラを使用可能かどうか判定する
-        if([UIImagePickerController isSourceTypeAvailable:sourceType]){
+        if (!delegate.cameraFlag) {
             
-            //UIImagePickerControllerを初期化・生成
-            UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+            //カメラを使用可能かどうか判定する
+            if([UIImagePickerController isSourceTypeAvailable:sourceType]){
+                
+                //UIImagePickerControllerを初期化・生成
+                UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+                
+                //画像の取得先をカメラに設定
+                picker.sourceType = sourceType;
+                
+                //デリゲートを設定
+                picker.delegate = self;
+                
+                delegate.cameraFlag = YES;
+                
+                //カメラをモーダルビューとして表示する
+                [self presentViewController:picker animated:YES completion:nil];
+                
+            }
             
-            //画像の取得先をカメラに設定
-            picker.sourceType = sourceType;
+        }else if(sourceType == UIImagePickerControllerSourceTypePhotoLibrary){ //画像の取得先がライブラリ
             
-            //デリゲートを設定
-            picker.delegate = self;
-            
-            delegate.cameraFlag = YES;
-            
-            //カメラをモーダルビューとして表示する
-            [self presentViewController:picker animated:YES completion:nil];
-            
+            //フォトライブラリを使用可能かどうか判定する
+            if([UIImagePickerController isSourceTypeAvailable:sourceType]){
+                
+                //UIImagePickerControllerを初期化・生成
+                UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+                
+                //画像の取得先をフォトライブラリに設定
+                picker.sourceType = sourceType;
+                
+                //デリゲートを設定
+                picker.delegate = self;
+                
+                //フォトライブラリをモーダルビューとして表示する
+                [self presentViewController:picker animated:YES completion:nil];
+            }
         }
     }
-    
 }
+
 
 //何らかの画像が取得できた場合
 -(void)imagePickerController:(UIImagePickerController *)picker
@@ -74,6 +92,7 @@
     [self.view addSubview:imageView];
     
     
+    NSLog(@"取得");
     /*
      //カメラモードの場合
      if(picker.sourceType == UIImagePickerControllerSourceTypeCamera){
@@ -97,68 +116,6 @@
     
 }
 
-/*
- - (IBAction)colorFilterBtn:(UIButton*)filterBtn{
- NSLog(@"ボタンを押した！");
- 
- tap++;
- 
- 
- // GUIで設定した画像を取得する
- inputImage = self.imageView.image;
- 
- // 画像をGPUImageのフォーマットに治す
- GPUImagePicture *imagePicture = [[GPUImagePicture alloc] initWithImage:inputImage];
- 
- 
- if(tap > 1){
- outputImage = nil;
- //self.imageView.image = nil;
- self.imageView.image = inputImage;
- }
- 
- 
- if(filterBtn.tag == 1) {
- 
- 
- // セピアフィルターを作る
- GPUImageSepiaFilter *sepiaFilter = [[GPUImageSepiaFilter alloc] init];
- 
- // イメージをセピアフィルターにくっつける
- [imagePicture addTarget:sepiaFilter];
- [sepiaFilter useNextFrameForImageCapture];
- 
- // フィルターを実行
- [imagePicture processImage];
- // 実行したフィルターから、画像を取得する
- outputImage = [sepiaFilter imageFromCurrentFramebuffer];
- 
- // 取得した画像をセットする
- self.imageView.image = outputImage;
- 
- }else if(filterBtn.tag == 2){
- 
- //モノクロフィルターを生成
- GPUImageGrayscaleFilter *grayFilter = [[GPUImageGrayscaleFilter alloc] init];
- //画像にモノクロフィルターをくっつける
- [imagePicture addTarget:grayFilter];
- //モノクロフィルター処理を実行
- [imagePicture processImage];
- 
- //実行したフィルターから画像を取得
- outputImage = [grayFilter imageByFilteringImage:inputImage];
- //取得した画像をImageViewにセットする
- self.imageView.image = outputImage;
- 
- }
- 
- 
- 
- }
- 
- 
- */
-
 
 -(IBAction)savePhoto{
     
@@ -174,6 +131,7 @@
                           }
      ];
 }
+
 
 -(IBAction)blurFilter{
     
@@ -280,5 +238,71 @@
         
     }
 }
+
+
+
+
+/*
+ - (IBAction)colorFilterBtn:(UIButton*)filterBtn{
+ NSLog(@"ボタンを押した！");
+ 
+ tap++;
+ 
+ 
+ // GUIで設定した画像を取得する
+ inputImage = self.imageView.image;
+ 
+ // 画像をGPUImageのフォーマットに治す
+ GPUImagePicture *imagePicture = [[GPUImagePicture alloc] initWithImage:inputImage];
+ 
+ 
+ if(tap > 1){
+ outputImage = nil;
+ //self.imageView.image = nil;
+ self.imageView.image = inputImage;
+ }
+ 
+ 
+ if(filterBtn.tag == 1) {
+ 
+ 
+ // セピアフィルターを作る
+ GPUImageSepiaFilter *sepiaFilter = [[GPUImageSepiaFilter alloc] init];
+ 
+ // イメージをセピアフィルターにくっつける
+ [imagePicture addTarget:sepiaFilter];
+ [sepiaFilter useNextFrameForImageCapture];
+ 
+ // フィルターを実行
+ [imagePicture processImage];
+ // 実行したフィルターから、画像を取得する
+ outputImage = [sepiaFilter imageFromCurrentFramebuffer];
+ 
+ // 取得した画像をセットする
+ self.imageView.image = outputImage;
+ 
+ }else if(filterBtn.tag == 2){
+ 
+ //モノクロフィルターを生成
+ GPUImageGrayscaleFilter *grayFilter = [[GPUImageGrayscaleFilter alloc] init];
+ //画像にモノクロフィルターをくっつける
+ [imagePicture addTarget:grayFilter];
+ //モノクロフィルター処理を実行
+ [imagePicture processImage];
+ 
+ //実行したフィルターから画像を取得
+ outputImage = [grayFilter imageByFilteringImage:inputImage];
+ //取得した画像をImageViewにセットする
+ self.imageView.image = outputImage;
+ 
+ }
+ 
+ 
+ 
+ }
+ 
+ 
+ */
+
 
 @end

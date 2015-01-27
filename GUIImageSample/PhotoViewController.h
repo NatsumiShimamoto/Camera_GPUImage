@@ -18,8 +18,8 @@
     
     UIImageView *imageView;
   
+    UIImagePickerControllerSourceType sourceType;
 }
-
 
 
 -(IBAction)blurFilter;
@@ -29,9 +29,5 @@
 
 //写真を保存する
 -(IBAction)savePhoto;
-
-//エフェクトをかける
--(IBAction)effect;
-
 
 @end

@@ -10,24 +10,26 @@
 #import <Social/Social.h>
 #import <Twitter/Twitter.h>
 #import "PhotoViewController.h"
+#import <AssetsLibrary/AssetsLibrary.h>
+//#import <UIKit/UIKit.h>
 
 
 @interface ViewController : UIViewController<UINavigationControllerDelegate,UIImagePickerControllerDelegate>
 {
     
-    UIImage *originImage; //元の画像
-    CIImage *filteredImage; //処理中の画像
+   // UIImage *originImage; //元の画像
+   // CIImage *filteredImage; //処理中の画像
 
-    int tap;
+    //int tap;
     
-    UIImage *inputImage;
-    UIImage *outputImage;
+   // UIImage *inputImage;
+   // UIImage *outputImage;
+    
+    UIImageView *cameraView;
+    UIImageView *libraryView;
 }
 
--(IBAction)takePhoto;
-    
-//フォトライブラリを開く
--(IBAction)openLibrary;
+@property UIImagePickerControllerSourceType sourceType;
 
 @end
 

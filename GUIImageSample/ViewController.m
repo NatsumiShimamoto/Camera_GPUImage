@@ -13,12 +13,27 @@
 @end
 
 @implementation ViewController
+@synthesize sourceType;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
-    tap = 0;
+    cameraView = [[UIImageView alloc] initWithFrame:CGRectMake(50, 50, 80, 80)];
+    libraryView = [[UIImageView alloc] initWithFrame:CGRectMake(100, 200, 80, 80)];
+    
+    cameraView.backgroundColor = [UIColor blackColor];
+    libraryView.backgroundColor = [UIColor redColor];
+    
+    cameraView.userInteractionEnabled = YES;
+    libraryView.userInteractionEnabled = YES;
+    
+    cameraView.tag = 1;
+    libraryView.tag = 2;
+    
+    [self.view addSubview:cameraView];
+    [self.view addSubview:libraryView];
+    
 }
 
 -(void)viewDidAppear:(BOOL)animated{
@@ -30,38 +45,36 @@
     // Dispose of any resources that can be recreated.
 }
 
-
-//カメラを起動する
--(IBAction)takePhoto{
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
     
-     PhotoViewController *photoVC = [self.storyboard instantiateViewControllerWithIdentifier:@"PhotoViewController"];
+    UITouch *touch = [touches anyObject];
+
+    switch (touch.view.tag){
+    
+        case 1:
+            //画像の取得先をカメラに設定
+            sourceType = UIImagePickerControllerSourceTypeCamera;
+            
+            break;
+            
+        case 2:
+            //画像の取得先をフォトライブラリに設定
+            sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+            
+            break;
+            
+        default:
+            break;
+    }
+    
+    NSLog(@"タッチ");
+    NSLog(@"%d",touch.view.tag);
+    
+    
+    PhotoViewController *photoVC = [self.storyboard instantiateViewControllerWithIdentifier:@"PhotoViewController"];
     [self presentViewController:photoVC animated:YES completion:nil];
     
     NSLog(@"画面遷移");
 }
-
-
-//フォトライブラリを開く
--(IBAction)openLibrary{
-    //画像の取得先をフォトライブラリに設定
-    UIImagePickerControllerSourceType sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-    
-    //フォトライブラリを使用可能かどうか判定する
-    if([UIImagePickerController isSourceTypeAvailable:sourceType]){
-        
-        //UIImagePickerControllerを初期化・生成
-        UIImagePickerController *picker = [[UIImagePickerController alloc] init];
-        
-        //画像の取得先をフォトライブラリに設定
-        picker.sourceType = sourceType;
-        
-        //デリゲートを設定
-        picker.delegate = self;
-        
-        //フォトライブラリをモーダルビューとして表示する
-        [self presentViewController:picker animated:YES completion:nil];
-    }
-}
-
 
 @end
