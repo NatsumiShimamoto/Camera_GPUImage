@@ -55,12 +55,15 @@
             //画像の取得先をカメラに設定
             sourceType = UIImagePickerControllerSourceTypeCamera;
             
+            NSLog(@"Camera");
+           
             break;
             
         case 2:
             //画像の取得先をフォトライブラリに設定
             sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-            
+            NSLog(@"Library");
+          
             break;
             
         default:

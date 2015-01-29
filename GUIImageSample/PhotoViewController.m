@@ -34,8 +34,10 @@
 
 -(void)viewDidAppear:(BOOL)animated{
     
+    NSLog(@"%d",sourceType);
+    
     if (sourceType == UIImagePickerControllerSourceTypeCamera) { //画像の取得先がカメラ
-        
+        NSLog(@"カメラ");
         if (!delegate.cameraFlag) {
             
             //カメラを使用可能かどうか判定する
@@ -57,8 +59,9 @@
                 
             }
             
-        }else if(sourceType == UIImagePickerControllerSourceTypePhotoLibrary){ //画像の取得先がライブラリ
-            
+        }
+    }else if(sourceType == UIImagePickerControllerSourceTypePhotoLibrary){ //画像の取得先がライブラリ
+            NSLog(@"ライブラリ");
             //フォトライブラリを使用可能かどうか判定する
             if([UIImagePickerController isSourceTypeAvailable:sourceType]){
                 
@@ -76,7 +79,7 @@
             }
         }
     }
-}
+
 
 
 //何らかの画像が取得できた場合

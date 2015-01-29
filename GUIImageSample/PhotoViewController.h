@@ -18,7 +18,7 @@
     
     UIImageView *imageView;
   
-    UIImagePickerControllerSourceType sourceType;
+    int sourceType;
 }
 
 
