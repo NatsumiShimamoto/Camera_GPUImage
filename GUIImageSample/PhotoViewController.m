@@ -34,8 +34,6 @@
 
 -(void)viewDidAppear:(BOOL)animated{
     
-    NSLog(@"%d",sourceType);
-    
     if (sourceType == UIImagePickerControllerSourceTypeCamera) { //画像の取得先がカメラ
         NSLog(@"カメラ");
         if (!delegate.cameraFlag) {
