@@ -24,6 +24,9 @@
     ViewController *vc = [[ViewController alloc] initWithNibName:nil bundle:nil];
     sourceType = vc.sourceType;
     
+    NSLog(@"おお%d",vc.sourceType);
+    
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -33,6 +36,7 @@
 
 
 -(void)viewDidAppear:(BOOL)animated{
+    NSLog(@"sourceType is %d",sourceType);
     
     if (sourceType == UIImagePickerControllerSourceTypeCamera) { //画像の取得先がカメラ
         NSLog(@"カメラ");
@@ -59,24 +63,24 @@
             
         }
     }else if(sourceType == UIImagePickerControllerSourceTypePhotoLibrary){ //画像の取得先がライブラリ
-            NSLog(@"ライブラリ");
-            //フォトライブラリを使用可能かどうか判定する
-            if([UIImagePickerController isSourceTypeAvailable:sourceType]){
-                
-                //UIImagePickerControllerを初期化・生成
-                UIImagePickerController *picker = [[UIImagePickerController alloc] init];
-                
-                //画像の取得先をフォトライブラリに設定
-                picker.sourceType = sourceType;
-                
-                //デリゲートを設定
-                picker.delegate = self;
-                
-                //フォトライブラリをモーダルビューとして表示する
-                [self presentViewController:picker animated:YES completion:nil];
-            }
+        NSLog(@"ライブラリ");
+        //フォトライブラリを使用可能かどうか判定する
+        if([UIImagePickerController isSourceTypeAvailable:sourceType]){
+            
+            //UIImagePickerControllerを初期化・生成
+            UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+            
+            //画像の取得先をフォトライブラリに設定
+            picker.sourceType = sourceType;
+            
+            //デリゲートを設定
+            picker.delegate = self;
+            
+            //フォトライブラリをモーダルビューとして表示する
+            [self presentViewController:picker animated:YES completion:nil];
         }
     }
+}
 
 
 

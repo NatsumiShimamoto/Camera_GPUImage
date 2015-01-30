@@ -48,22 +48,22 @@
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
     
     UITouch *touch = [touches anyObject];
-
-    switch (touch.view.tag){
     
+    switch (touch.view.tag){
+            
         case 1:
             //画像の取得先をカメラに設定
             sourceType = UIImagePickerControllerSourceTypeCamera;
             
             NSLog(@"Camera");
-           
+            NSLog(@"sourceType is %d",sourceType);
             break;
             
         case 2:
             //画像の取得先をフォトライブラリに設定
             sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
             NSLog(@"Library");
-          
+            NSLog(@"sourceType is %d",sourceType);
             break;
             
         default:

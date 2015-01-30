@@ -8,8 +8,8 @@
 
 #import "ViewController.h"
 #import "AppDelegate.h"
-#import <AssetsLibrary/AssetsLibrary.h>
 #import "GPUImage.h"
+#import <AssetsLibrary/AssetsLibrary.h>
 
 @interface PhotoViewController : UIViewController<UINavigationControllerDelegate,UIImagePickerControllerDelegate>
 
