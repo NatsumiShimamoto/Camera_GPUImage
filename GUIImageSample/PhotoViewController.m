@@ -20,11 +20,12 @@
     
     delegate = [UIApplication sharedApplication].delegate;
     delegate.cameraFlag = NO;
+    delegate.libraryFlag = NO;
     
     ViewController *vc = [[ViewController alloc] initWithNibName:nil bundle:nil];
     sourceType = vc.sourceType;
     
-    NSLog(@"おお%d",vc.sourceType);
+    NSLog(@"vc.sourceType is %d",vc.sourceType);
     
     
 }
@@ -64,6 +65,7 @@
         }
     }else if(sourceType == UIImagePickerControllerSourceTypePhotoLibrary){ //画像の取得先がライブラリ
         NSLog(@"ライブラリ");
+        if(!delegate.libraryFlag){
         //フォトライブラリを使用可能かどうか判定する
         if([UIImagePickerController isSourceTypeAvailable:sourceType]){
             
@@ -76,8 +78,11 @@
             //デリゲートを設定
             picker.delegate = self;
             
+            delegate.libraryFlag = YES;
+            
             //フォトライブラリをモーダルビューとして表示する
             [self presentViewController:picker animated:YES completion:nil];
+        }
         }
     }
 }

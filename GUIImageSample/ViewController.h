@@ -27,6 +27,9 @@
     
     UIImageView *cameraView;
     UIImageView *libraryView;
+    
+    UIImage *cameraImage;
+    UIImage *libraryImage;
 }
 
 @property UIImagePickerControllerSourceType sourceType;

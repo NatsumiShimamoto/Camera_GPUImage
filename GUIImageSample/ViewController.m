@@ -19,19 +19,19 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
-    cameraView = [[UIImageView alloc] initWithFrame:CGRectMake(50, 50, 80, 80)];
-    libraryView = [[UIImageView alloc] initWithFrame:CGRectMake(100, 200, 80, 80)];
     
-    cameraView.backgroundColor = [UIColor blackColor];
-    libraryView.backgroundColor = [UIColor redColor];
-    
+    cameraImage = [UIImage imageNamed:@"camera.png"];
+    cameraView = [[UIImageView alloc] initWithImage:cameraImage];
+    cameraView.frame = CGRectMake(50, 350, 50, 50);
     cameraView.userInteractionEnabled = YES;
-    libraryView.userInteractionEnabled = YES;
-    
     cameraView.tag = 1;
-    libraryView.tag = 2;
-    
     [self.view addSubview:cameraView];
+    
+    libraryImage = [UIImage imageNamed:@"library.png"];
+    libraryView = [[UIImageView alloc] initWithImage:libraryImage];
+    libraryView.frame = CGRectMake(150, 350, 50, 50);
+    libraryView.userInteractionEnabled = YES;
+    libraryView.tag = 2;
     [self.view addSubview:libraryView];
     
 }
@@ -48,36 +48,40 @@
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
     
     UITouch *touch = [touches anyObject];
+    PhotoViewController *photoVC = [self.storyboard instantiateViewControllerWithIdentifier:@"PhotoViewController"];
     
+       NSLog(@"%d",touch.view.tag);
     switch (touch.view.tag){
-            
+         
         case 1:
             //画像の取得先をカメラに設定
             sourceType = UIImagePickerControllerSourceTypeCamera;
-            
+            [self presentViewController:photoVC animated:YES completion:nil];
+
             NSLog(@"Camera");
-            NSLog(@"sourceType is %d",sourceType);
+            NSLog(@"--ViewController sourceType is %d",sourceType);
+    
             break;
             
         case 2:
             //画像の取得先をフォトライブラリに設定
             sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+            [self presentViewController:photoVC animated:YES completion:nil];
+            
             NSLog(@"Library");
-            NSLog(@"sourceType is %d",sourceType);
+            NSLog(@"--ViewController sourceType is %@",sourceType);
+            
             break;
             
         default:
+            
             break;
     }
     
     NSLog(@"タッチ");
-    NSLog(@"%d",touch.view.tag);
     
     
-    PhotoViewController *photoVC = [self.storyboard instantiateViewControllerWithIdentifier:@"PhotoViewController"];
-    [self presentViewController:photoVC animated:YES completion:nil];
     
-    NSLog(@"画面遷移");
 }
 
 @end

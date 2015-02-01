@@ -12,6 +12,7 @@
 
 @property (strong, nonatomic) UIWindow *window;
 @property (nonatomic) BOOL cameraFlag;
+@property (nonatomic) BOOL libraryFlag;
 
 
 @end
