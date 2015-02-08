@@ -30,4 +30,6 @@
 //写真を保存する
 -(IBAction)savePhoto;
 
+-(IBAction)back;
+
 @end

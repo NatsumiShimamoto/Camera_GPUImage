@@ -69,7 +69,7 @@
             [self presentViewController:photoVC animated:YES completion:nil];
             
             NSLog(@"Library");
-            NSLog(@"--ViewController sourceType is %@",sourceType);
+            NSLog(@"--ViewController sourceType is %d",sourceType);
             
             break;
             

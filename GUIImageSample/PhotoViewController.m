@@ -167,7 +167,10 @@
 
 
 
-
+-(IBAction)back{
+    //[self.navigationController dismissViewControllerAnimated:YES completion:nil];
+     [self dismissViewControllerAnimated:YES completion:NULL];
+}
 
 
 /* --- 保存が完了したら呼ばれるメソッド --- */
